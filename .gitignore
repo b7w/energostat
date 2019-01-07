@@ -1,0 +1,9 @@
+\.pyc
+\.pyo
+\.DS_Store
+
+\.idea/
+
+tmp/
+target/
+venv/

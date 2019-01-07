@@ -1,0 +1,5 @@
+lxml==4.3.*
+parsel==1.5.*
+python-dateutil==2.7.*
+toml=0.10.*
+pytz

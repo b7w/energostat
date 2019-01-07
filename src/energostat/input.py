@@ -36,13 +36,7 @@ def read_html(sources):
         logger.info('Find sensor %s in %s', sensor, name)
         rows = sel.css('tbody tr')
         logger.info('Find %s rows in %s', len(rows), name)
-        previous = None
         for row in rows:
             n, power_plus, pm, rpp, rpm, time, date, p, d, utc = (i.css('::text').get() for i in row.css('td'))
-            m = Metric(sensor, n, Decimal(power_plus), pm, rpp, rpm, datetime.strptime(time, '%H:%M'),
-                       datetime.strptime(date, '%d.%m.%y').date(), p, d, utc)
-            if previous != m._replace(number=None, utc=None):
-                yield m
-            else:
-                logger.info('Found duplicate metric %s and previous %s', m, previous)
-            previous = m._replace(number=None, utc=None)
+            yield (Metric(sensor, n, Decimal(power_plus), pm, rpp, rpm, datetime.strptime(time, '%H:%M'),
+                          datetime.strptime(date, '%d.%m.%y').date(), p, d, utc))

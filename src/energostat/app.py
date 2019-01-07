@@ -3,6 +3,7 @@ from itertools import groupby
 
 from energostat.input import read_zip, read_html
 from energostat.model import key_date, key_sensor
+from energostat.utils import fix_data
 from energostat.output import create_xml, create_zip
 
 logger = logging.getLogger('root')
@@ -21,6 +22,7 @@ def html2xml(f_in, f_out):
     messages = []
     for date, v in groupby(sorted(metrics, key=key_date), key=key_date):
         sensor_set = groupby(sorted(v, key=key_sensor), key=key_sensor)
+        sensor_set = fix_data(sensor_set)
         xml = create_xml(agreement_id, company_inn, company_name, date, sensor_set)
         msg = f'80020_001_{agreement_id}_{date:%d%m%Y}', xml
         logger.debug('XML: %s', msg)

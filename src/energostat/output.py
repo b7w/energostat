@@ -24,7 +24,7 @@ def period_el(metric: Metric):
             dict(start=start.strftime(FORMAT_HM), end=metric.time.strftime(FORMAT_HM)),
             E.value(
                 dict(status='0'),
-                format_decimal(metric.power_plus) + '#' + metric.number
+                format_decimal(metric.power_plus)
             )
         )
     )
@@ -46,8 +46,8 @@ def create_xml(agreement_id, sender_inn, sender_name, date, sensor_set):
     account_points = []
     for sensor, values in sensor_set:
         periods = [period_el(i) for i in values]
-        # if len(periods) != 24:
-        #     raise Exception(f'Sensor {sensor} has {len(periods)} periods for date {date}')
+        if len(periods) != 24:
+            raise Exception(f'Sensor {sensor} has {len(periods)} periods for date {date}')
         ap = account_point_el(agreement_id, sensor, periods)
         account_points.append(ap)
 
@@ -64,8 +64,8 @@ def create_xml(agreement_id, sender_inn, sender_name, date, sensor_set):
                 E.name(sender_name)
             ),
             E.area(
-                dict(timezone='1'),  # Попробовтаь найти описание
-                E.inn('0000000000'),  # содержит ИНН организации субъекта ОРЭ.
+                dict(timezone='1'),
+                E.inn('0000000000'),
                 E.name('0'),
                 *account_points
             )

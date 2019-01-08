@@ -1,0 +1,71 @@
+---
+- name: Build and push docker image
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - 'config.yml'
+  tasks:
+    - name: Log into registry
+      docker_login:
+        registry: '{{ registry.host }}'
+        username: '{{ registry.username }}'
+        password: '{{ registry.password }}'
+        reauthorize: yes
+
+    - name: Build and push
+      docker_image:
+        path: ..
+        name: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
+        push: yes
+        force: true
+
+    - name: Push {{ build_id }} tag
+      docker_image:
+        name: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
+        repository: '{{ registry.host }}/b7w/energostat:latest'
+        push: yes
+        force: true
+
+    - name: Clear latest image
+      docker_image:
+        state: absent
+        name: '{{ registry.host }}/b7w/energostat'
+        tag: 'latest'
+
+    - name: Clear {{ build_id }} image
+      docker_image:
+        state: absent
+        name: '{{ registry.host }}/b7w/energostat'
+        tag: '{{ build_id }}'
+
+
+- name: Deploy energostat
+  hosts: all
+  gather_facts: yes
+  vars:
+    compose_path: 'energostat'
+  vars_files:
+    - 'config.yml'
+  tasks:
+    - name: Create directory
+      file:
+        path: '{{ compose_path }}'
+        state: directory
+        mode: 0755
+
+    - name: Copy docker-compose.yml
+      template:
+        src: 'docker-compose.yml'
+        dest: '{{ compose_path }}/docker-compose.yml'
+        mode: 0777
+
+    - name: docker-compose down
+      command: docker-compose down --remove-orphans
+      args:
+        chdir: '{{ compose_path }}'
+
+    - name: docker-compose up -d
+      command: docker-compose up -d
+      args:
+        chdir: '{{ compose_path }}'

@@ -1,0 +1,4 @@
+registry:
+    host: 'registry.example.com'
+    username: 'user'
+    password: 'password'

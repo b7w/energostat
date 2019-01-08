@@ -1,0 +1,12 @@
+version: "2.1"
+services:
+    app:
+        image: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
+        restart: always
+        ports:
+            - "8080:5000"
+        logging:
+            driver: json-file
+            options:
+                max-file: "4"
+                max-size: "4m"

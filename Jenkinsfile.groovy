@@ -17,7 +17,6 @@ def testStage() {
     stage('Test') {
         docker.image('python:3.7-slim').inside("-v/var/jenkins:/var/jenkins") {
             withEnv(['XDG_CACHE_HOME=/var/jenkins']) {
-                sh('pip3 install -U pip')
                 sh('pip3 install -r requirements.txt')
                 sh('pip3 install pytest')
             }

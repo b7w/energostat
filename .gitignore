@@ -1,6 +1,7 @@
 \.pyc
 \.pyo
 \.DS_Store
+playbook.retry
 
 \.idea/
 

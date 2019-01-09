@@ -21,7 +21,7 @@ def read_zip(file):
                 logger.info('Load %s', name)
                 html.append((name, s,))
             if name.endswith('.ini'):
-                s = str(z.read(name), encoding='utf8')
+                s = str(z.read(name), encoding='utf-8-sig')
                 logger.info('Load %s', name)
                 settings = toml.loads(s)
     return settings, html

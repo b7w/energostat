@@ -9,6 +9,7 @@ class Rec:
     def __init__(self, number, time):
         self.number = number
         self.time = time
+        self.sensor = '#test'
 
     def _replace(self, time=None):
         return Rec(self.number, time)
@@ -29,9 +30,9 @@ class TestUtils(unittest.TestCase):
 
     def test_fill_missing(self):
         expected = list(map(lambda x: Rec(x[0], x[1]), enumerate(time_hours())))
-        actual = list(_fill_missing(expected[3:6]))
+        actual, report = _fill_missing(expected[3:6])
         self.assertEqual(len(actual), 24)
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, list(actual))
 
 
 if __name__ == '__main__':

@@ -74,7 +74,8 @@ def create_xml(agreement_id, sender_inn, sender_name, date, sensor_set):
     return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='windows-1251', standalone=True)
 
 
-def create_zip(file, messages):
+def create_zip(file, messages, info):
     with ZipFile(file, 'w') as z:
         for name, xml in messages:
             z.writestr(f'{name}.xml', xml)
+        z.writestr('report.txt', '\n'.join(info))

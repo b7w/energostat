@@ -13,17 +13,20 @@ def time_hours():
     yield datetime.strptime('00:00', '%H:%M')
 
 
-def _drop_duplicates(values):
-    previous = None
+def _drop_duplicates(values, report):
+    p = None
+    p_full = None
     for v in values:
-        if previous != v._replace(number=None, utc=None):
+        if p != v._replace(number=None, utc=None):
             yield v
         else:
-            logger.warning('Found duplicate metric %s, previous %s', v, previous)
-        previous = v._replace(number=None, utc=None)
+            logger.warning('Found duplicate metric %s, previous %s', v, p_full)
+            report.append(f'Found duplicate metric sensor: {v.sensor}, number: {v.number}, previous: {p_full.number}')
+        p = v._replace(number=None, utc=None)
+        p_full = v
 
 
-def _fill_missing(values):
+def _fill_missing(values, report):
     values = list(values)
     res = OrderedDict()
     for t in time_hours():
@@ -40,15 +43,16 @@ def _fill_missing(values):
             new = previous._replace(time=k)
             res[k] = new
             logger.warning('Create metric %s from previous %s', new, previous)
+            report.append(f'Create metric sensor: {new.sensor}, number: {new.number}')
     return res.values()
 
 
-def fix_data(sensor_set):
+def fix_data(sensor_set, report):
     """
     Remove duplicates and add missing records
     """
     for sensor, values in sensor_set:
         values = list(values)
-        values = _drop_duplicates(values)
-        values = _fill_missing(values)
+        values = _drop_duplicates(values, report)
+        values = _fill_missing(values, report)
         yield sensor, values

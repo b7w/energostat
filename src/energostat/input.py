@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from decimal import Decimal
+from pathlib import Path
 from zipfile import ZipFile
 
 import toml as toml
@@ -16,14 +17,16 @@ def read_zip(file):
     settings = {}
     with ZipFile(file) as z:
         for name in z.namelist():
-            if name.endswith('.html'):
-                s = str(z.read(name), encoding='cp1251')
-                logger.info('Load %s', name)
-                html.append((name, s,))
-            if name.endswith('.ini'):
-                s = str(z.read(name), encoding='utf-8-sig')
-                logger.info('Load %s', name)
-                settings = toml.loads(s)
+            if not Path(name).name.startswith('.'):
+                if name.endswith('.html'):
+                    s = str(z.read(name), encoding='cp1251')
+                    logger.info('Load %s', name)
+                    html.append((name, s,))
+                if not name.startswith('.') and name.endswith('.ini'):
+                    r = z.read(name)
+                    s = str(r, encoding='utf-8-sig')
+                    logger.info('Load %s', name)
+                    settings = toml.loads(s)
     return settings, html
 
 
@@ -38,5 +41,8 @@ def read_html(sources):
         logger.info('Find %s rows in %s', len(rows), name)
         for row in rows:
             n, power_plus, pm, rpp, rpm, time, date, p, d, utc = (i.css('::text').get() for i in row.css('td'))
+            f_date = datetime.strptime(date, '%d.%m.%y').date() \
+                if len(date) == 8 \
+                else datetime.strptime(date, '%d.%m.%Y').date()
             yield (Metric(sensor, n, Decimal(power_plus), pm, rpp, rpm, datetime.strptime(time, '%H:%M'),
-                          datetime.strptime(date, '%d.%m.%y').date(), p, d, utc))
+                          f_date, p, d, utc))

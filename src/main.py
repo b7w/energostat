@@ -6,6 +6,7 @@ from logging.config import dictConfig
 from flask import Flask, send_from_directory, request, redirect, send_file
 
 from energostat.app import html2xml_bytes
+from energostat.utils import GunicornApplication
 
 logger = logging.getLogger('root')
 
@@ -14,8 +15,9 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'simple': {
-            'format': '%(levelname)-5s [%(asctime)s, %(msecs)d] %(name)s.%(funcName)s at %(lineno)d: %(message)s',
-            'datefmt': '%Y-%b-%d %H:%M:%S',
+            "format": "%(asctime)s [%(process)d] [%(levelname)s] [%(name)s.%(funcName)s at %(lineno)d] %(message)s",
+            "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
+            "class": "logging.Formatter"
         },
     },
     'handlers': {
@@ -26,6 +28,14 @@ LOGGING = {
         },
     },
     'loggers': {
+        'gunicorn': {
+            'handlers': ['simple'],
+            'level': 'INFO',
+        },
+        'flask': {
+            'handlers': ['simple'],
+            'level': 'DEBUG',
+        },
         'energostat': {
             'handlers': ['simple'],
             'level': 'DEBUG',
@@ -33,7 +43,7 @@ LOGGING = {
         'root': {
             'handlers': ['simple'],
             'level': 'DEBUG',
-        },
+        }
     },
 }
 
@@ -71,4 +81,5 @@ def process():
 
 if __name__ == '__main__':
     dictConfig(LOGGING)
-    app.run(host='0.0.0.0')
+    logger.info('STArt')
+    GunicornApplication(app, LOGGING).run()

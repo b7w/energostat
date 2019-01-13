@@ -73,7 +73,8 @@ def process():
         f_out = html2xml_bytes(file)
         return send_file(
             f_out,
-            attachment_filename='messages.zip',
+            as_attachment=True,
+            attachment_filename='Energostat.zip',
             mimetype='application/zip'
         )
     return redirect('')

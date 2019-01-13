@@ -44,5 +44,8 @@ def read_html(sources):
             f_date = datetime.strptime(date, '%d.%m.%y').date() \
                 if len(date) == 8 \
                 else datetime.strptime(date, '%d.%m.%Y').date()
-            yield (Metric(sensor, n, Decimal(power_plus), pm, rpp, rpm, datetime.strptime(time, '%H:%M'),
+            full_date = datetime.strptime(date + ' ' + time, '%d.%m.%y %H:%M') \
+                if len(date) == 8 \
+                else datetime.strptime(date + ' ' + time, '%d.%m.%Y %H:%M')
+            yield (Metric(sensor, n, Decimal(power_plus), pm, rpp, rpm, full_date, datetime.strptime(time, '%H:%M'),
                           f_date, p, d, utc))

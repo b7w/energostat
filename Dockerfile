@@ -1,4 +1,4 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 
 ENV TIMEZONE="Europe/Moscow"
@@ -13,17 +13,15 @@ RUN apt-get update -qq && \
 # Copy files
 WORKDIR /app
 
-COPY src .
-COPY requirements.txt requirements.txt
+COPY src /app/
+COPY pyproject.toml poetry.lock /app/
 
 
 # Setup
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir poetry && \
+    poetry config settings.virtualenvs.create false && \
+    poetry install --no-dev --no-interaction
 
 
-# Create run scripts
-RUN echo "python main.py" >> start.sh \
-    && chmod +x start.sh
-
-# Start
-CMD "/app/start.sh"
+ENTRYPOINT ["python"]
+CMD ["main.py"]

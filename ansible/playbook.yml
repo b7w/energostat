@@ -15,17 +15,19 @@
 
     - name: Build and push
       docker_image:
-        path: ..
+        build:
+          path: ..
         name: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
         push: yes
-        force: true
+        force_source: true
+        force_tag: true
 
     - name: Push {{ build_id }} tag
       docker_image:
         name: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
         repository: '{{ registry.host }}/b7w/energostat:latest'
         push: yes
-        force: true
+        force_tag: true
 
     - name: Clear latest image
       docker_image:
@@ -42,7 +44,7 @@
 
 - name: Deploy energostat
   hosts: all
-  gather_facts: yes
+  gather_facts: false
   vars:
     compose_path: 'energostat'
   vars_files:

@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "energostat"
+version = "0.1.0"
+description = ""
+authors = ["B7W <b7w@isudo.ru>"]
+license = "MIT"
+
+
+[tool.poetry.dependencies]
+python = "^3.7"
+gunicorn = "^20.0"
+flask = "^1.1"
+lxml = "^4.4"
+parsel = "^1.5"
+python-dateutil = "^2.8"
+toml = "^0.10"
+pytz = "*"
+
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -1,7 +1,0 @@
-gunicorn==19.9.*
-flask==1.0.*
-lxml==4.3.*
-parsel==1.5.*
-python-dateutil==2.7.*
-toml==0.10.*
-pytz

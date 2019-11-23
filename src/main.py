@@ -40,11 +40,11 @@ LOGGING = {
             'handlers': ['simple'],
             'level': 'DEBUG',
         },
-        'root': {
-            'handlers': ['simple'],
-            'level': 'DEBUG',
-        }
     },
+    'root': {
+        'handlers': ['simple'],
+        'level': 'DEBUG',
+    }
 }
 
 app = Flask(__name__)
@@ -82,5 +82,6 @@ def process():
 
 if __name__ == '__main__':
     dictConfig(LOGGING)
-    logger.info('STArt')
+    dictConfig(LOGGING)
+    logger.info('Start')
     GunicornApplication(app, LOGGING).run()

@@ -35,9 +35,9 @@ steps:
       - echo "$PRIVATE_KEY" > /tmp/private_key
       - chmod 600 /tmp/private_key
       - ansible-playbook --private-key=/tmp/private_key --vault-password-file=/tmp/vault --inventory=ansible/hosts.ini ansible/playbook.yml -e build_id=$CI_BUILD_NUMBER
-    #when:
-    #  branch:
-    #    - master
+    when:
+      branch:
+        - master
 
 volumes:
   - name: docker

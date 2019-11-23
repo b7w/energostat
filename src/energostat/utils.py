@@ -1,6 +1,8 @@
+import functools
 import logging
 from collections import OrderedDict
 from datetime import datetime, timedelta
+from time import perf_counter
 
 from gunicorn.app.base import BaseApplication
 
@@ -84,3 +86,20 @@ def fix_data(sensor_set):
         report.extend(duplicates)
         report.extend(created)
     return result, report
+
+
+def timeit(f):
+    msg = '## {0} complete in {1:.0f} min {2:.1f} sec ({3}pc)'
+
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        start = perf_counter()
+        try:
+            return f(*args, **kwargs)
+        finally:
+            elapsed = perf_counter() - start
+            elapsed_sec = elapsed / 10 ** 9
+
+            print(msg.format(f.__name__, elapsed_sec // 60, elapsed_sec % 60, elapsed))
+
+    return wrapper

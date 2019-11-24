@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='windows-1251' standalone='yes'?>
+<message class="80020" version="2" number="2">
+  <datetime>
+    <timestamp>20191124235840</timestamp>
+    <daylightsavingtime>1</daylightsavingtime>
+    <day>20181211</day>
+  </datetime>
+  <sender>
+    <inn>1234567890</inn>
+    <name>ООО "Рога и Копыта"</name>
+  </sender>
+  <area timezone="1">
+    <inn>0000000000</inn>
+    <name>0</name>
+    <accountpoint code="1234567890123456" name="">
+      <measuringchannel code="01" desc="показание активного приема">
+        <period start="0000" end="0100">
+          <value status="0">482,4</value>
+        </period>
+        <period start="0100" end="0200">
+          <value status="0">484,2</value>
+        </period>
+        <period start="0200" end="0300">
+          <value status="0">486,6</value>
+        </period>
+        <period start="0300" end="0400">
+          <value status="0">488,2</value>
+        </period>
+        <period start="0400" end="0500">
+          <value status="0">490,8</value>
+        </period>
+        <period start="0500" end="0600">
+          <value status="0">492,8</value>
+        </period>
+        <period start="0600" end="0700">
+          <value status="0">494,6</value>
+        </period>
+        <period start="0700" end="0800">
+          <value status="0">496,8</value>
+        </period>
+        <period start="0800" end="0900">
+          <value status="0">498</value>
+        </period>
+        <period start="0900" end="1000">
+          <value status="0">500,4</value>
+        </period>
+        <period start="1000" end="1100">
+          <value status="0">502,2</value>
+        </period>
+        <period start="1100" end="1200">
+          <value status="0">504,8</value>
+        </period>
+        <period start="1200" end="1300">
+          <value status="0">506,8</value>
+        </period>
+        <period start="1300" end="1400">
+          <value status="0">508,2</value>
+        </period>
+        <period start="1400" end="1500">
+          <value status="0">510,6</value>
+        </period>
+        <period start="1500" end="1600">
+          <value status="0">512</value>
+        </period>
+        <period start="1600" end="1700">
+          <value status="0">514</value>
+        </period>
+        <period start="1700" end="1800">
+          <value status="0">516,8</value>
+        </period>
+        <period start="1800" end="1900">
+          <value status="0">518,8</value>
+        </period>
+        <period start="1900" end="2000">
+          <value status="0">520,2</value>
+        </period>
+        <period start="2000" end="2100">
+          <value status="0">522,8</value>
+        </period>
+        <period start="2100" end="2200">
+          <value status="0">524,4</value>
+        </period>
+        <period start="2200" end="2300">
+          <value status="0">526</value>
+        </period>
+        <period start="2300" end="0000">
+          <value status="0">528</value>
+        </period>
+      </measuringchannel>
+    </accountpoint>
+  </area>
+</message>

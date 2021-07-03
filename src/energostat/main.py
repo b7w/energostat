@@ -80,8 +80,12 @@ def process():
     return redirect('')
 
 
-if __name__ == '__main__':
+def main():
     dictConfig(LOGGING)
     dictConfig(LOGGING)
     logger.info('Start')
     GunicornApplication(app, LOGGING).run()
+
+
+if __name__ == '__main__':
+    main()

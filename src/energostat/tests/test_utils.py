@@ -2,7 +2,7 @@ import unittest
 from logging.config import dictConfig
 
 from energostat.utils import _fill_missing, time_hours
-from main import LOGGING
+from energostat.main import LOGGING
 
 
 class Rec:

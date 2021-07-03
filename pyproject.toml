@@ -17,9 +17,12 @@ toml = "^0.10"
 pytz = "*"
 
 
-
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+
+
+[tool.poetry.scripts]
+energostat = 'energostat.main:main'
 
 
 [build-system]

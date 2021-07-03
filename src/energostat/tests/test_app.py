@@ -31,7 +31,7 @@ class TestUtils(unittest.TestCase):
         io = BytesIO()
         with ZipFile(io, mode='w') as z:
             z.write(Path(pwd, 'test_app.input.html'), 'sample.html')
-            z.write(Path(pwd, '../../static/settings.ini').resolve(), 'settings.ini')
+            z.write(Path(pwd, '../static/settings.ini').resolve(), 'settings.ini')
         io.seek(0)
         return io
 

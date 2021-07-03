@@ -32,7 +32,6 @@ steps:
     when:
       branch:
         - master
-        - feature/better-ci
 
   - name: Deploy
     pull: always
@@ -55,4 +54,3 @@ steps:
     when:
       branch:
         - master
-        - feature/better-ci

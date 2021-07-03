@@ -10,9 +10,10 @@ class Rec:
         self.number = number
         self.time = time
         self.sensor = '#test'
+        self.datetime = '#test'
 
-    def _replace(self, time=None):
-        return Rec(self.number, time)
+    def _replace(self, number=None, time=None):
+        return Rec(number, time)
 
     def __repr__(self):
         return f'Rec({self.number}, {self.time.time()})'

@@ -45,8 +45,10 @@ def _drop_duplicates(values):
         if p != v._replace(number=None, utc=None):
             ressult.append(v)
         else:
-            logger.warning('Found duplicate metric %s, previous %s', v, p_full)
-            report.append(f'Found duplicate metric sensor: {v.sensor}, number: {v.number}, previous: {p_full.number}')
+            logger.warning('Found duplicate metric, ignoring. metric: %s, previous: %s', v, p_full)
+            report.append(f'Найден и проигнорирован дубликат.'
+                          f' Sensor: {v.sensor}, number: {v.number},'
+                          f' date: {str(v.datetime)}, previous: {p_full.number}.')
         p = v._replace(number=None, utc=None)
         p_full = v
     return ressult, report
@@ -66,10 +68,13 @@ def _fill_missing(values):
         if v:
             previous = v
         else:
-            new = previous._replace(time=k)
+            new = previous._replace(number=str(int(previous.number) + 2), time=k)
             result[k] = new
-            logger.warning('Create metric %s from previous %s', new, previous)
-            report.append(f'Create metric sensor: {new.sensor}, number: {new.number}')
+            logger.warning('Fill missing metric %s from previous %s', new, previous)
+            report.append(f'Найдент пропуск, заполнен из предыдушего.'
+                          f' Sensor: {new.sensor}, number: {new.number},'
+                          f' date: {str(new.datetime)}, previous: {previous.number}.')
+            previous = new
     return result.values(), report
 
 

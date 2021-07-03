@@ -1,0 +1,58 @@
+---
+kind: pipeline
+type: docker
+name: Energostat CI
+
+steps:
+  - name: Tests and Build
+    pull: always
+    image: python:3.8-slim
+    environment:
+      XDG_CACHE_HOME: tmp/pip
+    commands:
+      - pip3 install poetry
+      - poetry install
+      - poetry run pytest
+      - poetry build
+
+  - name: Build docker
+    pull: always
+    image: plugins/docker
+    settings:
+      registry: registry.b7w.me
+      repo: registry.b7w.me/b7w/energostat
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      dockerfile: .ci/Dockerfile
+      tags:
+        - '${DRONE_BRANCH/\//-}-${DRONE_BUILD_NUMBER}'
+      bip: 173.17.1.4/24  # For docker in docker
+    when:
+      branch:
+        - master
+        - feature/better-ci
+
+  - name: Deploy
+    pull: always
+    image: python:3.8-slim
+    # network_mode: host
+    environment:
+      XDG_CACHE_HOME: tmp/pip
+      ANSIBLE_HOST_KEY_CHECKING: False
+      PRIVATE_KEY:
+        from_secret: PRIVATE_KEY
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    commands:
+      - apt-get update -qq && apt-get install -yqq openssh-client
+      - pip3 install ansible
+      - echo "$PRIVATE_KEY" > /tmp/private_key
+      - chmod 600 /tmp/private_key
+      - ansible-playbook --private-key=/tmp/private_key --inventory=.ci/hosts.ini .ci/playbook.yml -e build_branch=${DRONE_BRANCH/\//-} -e build_id=${DRONE_BUILD_NUMBER}
+    when:
+      branch:
+        - master
+        - feature/better-ci

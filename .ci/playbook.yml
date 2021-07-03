@@ -1,0 +1,28 @@
+---
+- name: Deploy energostat
+  hosts: all
+  gather_facts: false
+  vars:
+    compose_path: 'energostat'
+  tasks:
+    - name: Create directory
+      file:
+        path: '{{ compose_path }}'
+        state: directory
+        mode: 0755
+
+    - name: Copy docker-compose.yml
+      template:
+        src: 'docker-compose.yml'
+        dest: '{{ compose_path }}/docker-compose.yml'
+        mode: 0777
+
+    - name: docker-compose down
+      command: docker-compose down --remove-orphans
+      args:
+        chdir: '{{ compose_path }}'
+
+    - name: docker-compose up -d
+      command: docker-compose up -d
+      args:
+        chdir: '{{ compose_path }}'

@@ -1,7 +1,7 @@
 version: "2.1"
 services:
     app:
-        image: '{{ registry.host }}/b7w/energostat:{{ build_id }}'
+        image: "registry.b7w.me/b7w/energostat:{{ build_branch }}-{{ build_id }}"
         restart: always
         ports:
             - "8080:5000"

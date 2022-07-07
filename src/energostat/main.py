@@ -74,7 +74,7 @@ def process():
         return send_file(
             f_out,
             as_attachment=True,
-            attachment_filename='Energostat.zip',
+            download_name='Energostat.zip',
             mimetype='application/zip'
         )
     return redirect('')

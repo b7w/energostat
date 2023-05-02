@@ -6,7 +6,7 @@ name: Energostat CI
 steps:
   - name: Tests and Build
     pull: always
-    image: python:3.9-slim
+    image: python:3.11-slim
     environment:
       XDG_CACHE_HOME: tmp/pip
     commands:
@@ -35,7 +35,7 @@ steps:
 
   - name: Deploy
     pull: always
-    image: python:3.9-slim
+    image: python:3.11-slim
     # network_mode: host
     environment:
       XDG_CACHE_HOME: tmp/pip

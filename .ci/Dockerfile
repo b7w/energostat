@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 ENV VERSION "0.1.0"
 ENV WHEEL "energostat-$VERSION-py3-none-any.whl"
@@ -11,8 +11,6 @@ RUN apt-get update -qq && \
 
 
 COPY dist/$WHEEL /app/
-
-RUN ls /app/$WHEEL
 
 RUN pip install --no-cache-dir /app/$WHEEL
 

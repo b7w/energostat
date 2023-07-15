@@ -12,6 +12,43 @@ Energostat
 в связи с федеральным законом "Об исчислении времени" от 03.06.2011 N 107-ФЗ.
 
 
+Запуск
+------
+
+Основные команды для создания инфраструктуры. Сгруппировано по сущностям, порядок запуска может отличаться.
+
+```sh
+mkdir -p tmp
+# service account
+yc iam service-account create --name=energostat
+
+# resources
+yc container registry b7w-me
+yc container repository lifecycle-policy create \
+  --repository-name=$CONTAINER_REGISTRY_ID/energostat \
+  --name=default \
+  --description "Energostat lifecycle-policy for tests" \
+  --rules=.ci/registry-lifecycle-policy.json \
+  --active
+yc serverless container create --name=energostat
+inv api-gateway-render
+yc serverless api-gateway create --name=energostat-b7w-me --spec=tmp/api-gateway.yml
+
+# vars
+export SERVICE_ACCOUNT_ID="$(yc iam service-account get --name=energostat --format=json | jq -r .id)"
+export CONTAINER_REGISTRY_ID="$(yc container registry get b7w-me --format=json | jq -r .id)"
+export CONTAINER_ID="$(yc serverless container get --name=energostat --format=json | jq -r .id)"
+
+# permissions
+yc container repository list-access-bindings --name=crpmvvnemddgrv6da22p/energostat
+yc container repository add-access-binding --name=crpmvvnemddgrv6da22p/energostat --service-account-id=$SERVICE_ACCOUNT_ID --role=container-registry.images.puller
+#yc serverless api-gateway list-access-bindings --name=energostat-b7w-me
+#yc serverless api-gateway add-access-binding --name=energostat-b7w-me --service-account-id=$SERVICE_ACCOUNT_ID --role=serverless-containers.containerInvoker
+yc resource-manager folder add-access-binding $(yc config get folder-id) --subject=serviceAccount:$SERVICE_ACCOUNT_ID --role=serverless-containers.containerInvoker
+```
+
+
+
 Формат XML макета 80020
 -----------------------
 

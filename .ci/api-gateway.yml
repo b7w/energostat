@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: Energostat
+  version: 1.0.0
+paths:
+  /{proxy+}:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: {{ container_id }}
+        service_account_id: {{ service_account_id }}
+      parameters:
+      - explode: false
+        in: path
+        name: proxy
+        required: false
+        schema:
+          default: '-'
+          type: string
+        style: simple

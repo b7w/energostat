@@ -1,0 +1,13 @@
+[
+    {
+        "description": "delete master Docker images older than 32 days but retain 4 last ones",
+        "tag_regexp": "master",
+        "expire_period": "32d",
+        "retained_top": 4
+    },
+    {
+        "description": "delete all untagged Docker images older than 48 hours",
+        "untagged": true,
+        "expire_period": "48h"
+    }
+]

@@ -21,7 +21,7 @@ class GunicornApplication(BaseApplication):
         super(GunicornApplication, self).__init__()
 
     def load_config(self):
-        port = os.environ.get('APP_PORT', '5000')
+        port = os.environ.get('APP_PORT') or os.environ.get('PORT') or '5000'
         self.cfg.set('bind', f'0.0.0.0:{port}')
         self.cfg.set('workers', '1')
         self.cfg.set('logconfig_dict', self.logging_dict)

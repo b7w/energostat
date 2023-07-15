@@ -10,8 +10,9 @@ RUN apt-get update -qq && \
     apt-get -qq clean
 
 
-COPY dist/$WHEEL /app/
+COPY dist/$WHEEL dist/requirements.txt /app/
 
+RUN pip install --no-cache-dir -r /app/requirements.txt
 RUN pip install --no-cache-dir /app/$WHEEL
 
 ENTRYPOINT ["energostat"]

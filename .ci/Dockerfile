@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11-slim-bullseye
 
 ENV VERSION "0.1.0"
 ENV WHEEL "energostat-$VERSION-py3-none-any.whl"

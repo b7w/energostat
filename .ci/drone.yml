@@ -15,6 +15,12 @@ steps:
       - poetry run pytest
       - poetry build
 
+  - name: Security scaner
+    pull: always
+    image: aquasec/trivy:0.45.1
+    commands:
+      - trivy fs .
+
   - name: Build docker
     pull: always
     image: plugins/docker

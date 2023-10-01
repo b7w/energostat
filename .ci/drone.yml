@@ -19,7 +19,7 @@ steps:
     pull: always
     image: aquasec/trivy:0.45.1
     commands:
-      - trivy fs .
+      - trivy fs --no-progress .
 
   - name: Build docker
     pull: always

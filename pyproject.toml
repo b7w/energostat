@@ -17,7 +17,7 @@ toml = "^0.10"
 pytz = "*"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7"
 
 

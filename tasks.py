@@ -33,7 +33,7 @@ def build(c):
     c.run('poetry build')
     c.run('poetry export -f requirements.txt --output dist/requirements.txt')
     if CONTAINER_REGISTRY_ID:
-        c.run(f'docker build -t {CONTAINER_URL} -f .ci/Dockerfile .')
+        c.run(f'docker build --pull -t {CONTAINER_URL} -f .ci/Dockerfile .')
         c.run(f'docker push {CONTAINER_URL}')
     else:
         print('Provide CONTAINER_REGISTRY_ID env var for docker build')
